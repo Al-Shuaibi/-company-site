@@ -23,6 +23,7 @@
     $$("[data-i18n-aria]").forEach(function (el) { el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria"))); });
     $$("[data-i18n-ph]").forEach(function (el) { el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
     $$(".js-brand").forEach(function (el) { el.textContent = brand; });
+    $$(".js-brand-short").forEach(function (el) { el.textContent = L(S.brand.short || S.brand.name); });
     $$(".js-tagline").forEach(function (el) { el.textContent = L(S.brand.tagline); });
     $(".brand").setAttribute("aria-label", brand);
     $(".nav").setAttribute("aria-label", t("menu"));
