@@ -7,8 +7,10 @@
 window.SITE = {
   // اسم عمل مؤقت حتى يُعتمد الاسم التجاري
   brand: {
-    name: { ar: "سَيْر", en: "Sayr" },
-    tagline: { ar: "أتمتة العمليات وحلول الذكاء الاصطناعي", en: "Process automation & AI solutions" }
+    name: { ar: "سَيْر للأنظمة الذكية", en: "Sayr Smart Systems" },
+    // الاسم المختصر في شريط الموقع العلوي
+    short: { ar: "سَيْر", en: "Sayr" },
+    tagline: { ar: "نُسيّر عملك بذكاء", en: "Smart systems that keep your work moving" }
   },
 
   contact: {
@@ -19,7 +21,7 @@ window.SITE = {
     founderSite: "https://mohammed-alshuaibi.vercel.app",
     city: { ar: "الرياض", en: "Riyadh" },
     // رابط حجز مباشر من التقويم (Google Calendar أو Cal.com). اتركه فارغًا ليعمل الحجز عبر النموذج.
-    bookingUrl: "",
+    bookingUrl: "https://calendar.app.google/oHpsAKe3BJcvMkoM9",
     // مفتاح Web3Forms (مجاني من web3forms.com). عند وضعه يصل طلب الحجز إلى بريدك مباشرة من الموقع.
     // إذا تركته فارغًا يفتح زر الإرسال تطبيق البريد عند الزائر والرسالة جاهزة.
     formKey: "202cf8c8-6661-4a75-bee0-48922cc12f0b"
@@ -33,7 +35,7 @@ window.SITE = {
 
   i18n: {
     ar: {
-      title: "{brand} | أتمتة العمليات وحلول الذكاء الاصطناعي",
+      title: "{brand} | نُسيّر عملك بذكاء",
       skip: "انتقل إلى المحتوى",
       nav_services: "الخدمات",
       nav_work: "أعمال سابقة",
@@ -95,9 +97,12 @@ window.SITE = {
       prod_text: "منصة لمتابعة تحصيل المستحقات الآجلة: تذكير آلي على واتساب، ووعود سداد مسجّلة، وتصنيف ائتماني لكل عميل، ومطابقة مع نظامك المحاسبي. فيها 30 ميزة جاهزة لنسخة الإطلاق.",
       prod_cta: "انضم لقائمة التجربة",
 
-      founder_title: "من يقف خلف العمل",
+      founder_title: "فريق العمل",
       founder_name: "محمد الشعيبي",
-      founder_role: "المؤسس",
+      founder_role: "المؤسس ومدير المشاريع",
+      team_lead: "يعمل على كل مشروع فريق من المحترفين، ويتولى كل جزء منه مختص في مجاله.",
+      net_title: "فريق متعدد التخصصات",
+      net_text: "نوزّع مهام كل مشروع على المختصين حسب مجالاتهم، ليُنفَّذ كل جزء بخبرة من يتقنه.",
       founder_text: "خلفية في المحاسبة والعمليات وإدارة المشاريع، وبكالوريوس في علوم الحاسب. أدار حسابات تتجاوز مليون ريال، ونظّم سير العمل في مصنع، وأدار مشروع دبلجة متعدد اللغات وبنى أدواته. لذلك يبدأ كل مشروع بفهم العمل من الداخل قبل بناء النظام.",
       founder_site: "الملف الشخصي",
       founder_li: "لينكدإن",
@@ -106,7 +111,7 @@ window.SITE = {
 
       book_title: "احجز اجتماعًا تعريفيًا",
       book_lead: "30 دقيقة نسمع فيها كيف يعمل فريقكم، ونقول لكم بوضوح إن كانت الأتمتة مناسبة لحالتكم. اختاروا الموعد، وسيصلنا الطلب لنؤكده لكم.",
-      book_direct: "أو احجز مباشرة من التقويم",
+      book_direct: "احجز اجتماعًا عن بعد مباشرة من التقويم",
       f_type: "نوع الاجتماع",
       f_type_remote: "عن بعد",
       f_type_remote_sub: "Google Meet",
@@ -168,7 +173,7 @@ window.SITE = {
     },
 
     en: {
-      title: "{brand} | Process automation & AI solutions",
+      title: "{brand} | Smart systems that keep your work moving",
       skip: "Skip to content",
       nav_services: "Services",
       nav_work: "Past work",
@@ -230,9 +235,12 @@ window.SITE = {
       prod_text: "A platform for following up on credit-sale collections: automatic WhatsApp reminders, recorded payment promises, a credit rating per customer, and reconciliation with your accounting system. 30 features are ready for the launch version.",
       prod_cta: "Join the early-access list",
 
-      founder_title: "Who is behind the work",
+      founder_title: "Our team",
       founder_name: "Mohammed Al-Shuaibi",
-      founder_role: "Founder",
+      founder_role: "Founder and project lead",
+      team_lead: "Every project is handled by a team of professionals, with each part led by a specialist in its field.",
+      net_title: "A multidisciplinary team",
+      net_text: "We assign each task to the specialist whose field it is, so every part is built by someone who masters it.",
       founder_text: "A background in accounting, operations and project management, with a degree in computer science. He has managed accounts worth over SAR 1M, organized a factory's workflow, and run a multilingual dubbing project while building its tools. So every project starts by understanding the work from the inside before building the system.",
       founder_site: "Personal profile",
       founder_li: "LinkedIn",
@@ -241,7 +249,7 @@ window.SITE = {
 
       book_title: "Book an intro meeting",
       book_lead: "30 minutes to hear how your team works, and a clear answer on whether automation fits your case. Pick a time and we will confirm it with you.",
-      book_direct: "Or book directly from the calendar",
+      book_direct: "Book an online meeting from the calendar",
       f_type: "Meeting type",
       f_type_remote: "Online",
       f_type_remote_sub: "Google Meet",
