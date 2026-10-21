@@ -21,6 +21,8 @@ window.SITE = {
     founderSite: "https://mohammed-alshuaibi.vercel.app",
     city: { ar: "الرياض", en: "Riyadh" },
     // رابط حجز مباشر من التقويم (Google Calendar أو Cal.com). اتركه فارغًا ليعمل الحجز عبر النموذج.
+    // رقم وثيقة العمل الحر أو السجل التجاري، يظهر أسفل الموقع. اتركه فارغًا حتى يصدر.
+    legal: { ar: "", en: "" },
     bookingUrl: "https://calendar.app.google/oHpsAKe3BJcvMkoM9",
     // مفتاح Web3Forms (مجاني من web3forms.com). عند وضعه يصل طلب الحجز إلى بريدك مباشرة من الموقع.
     // إذا تركته فارغًا يفتح زر الإرسال تطبيق البريد عند الزائر والرسالة جاهزة.
@@ -71,10 +73,16 @@ window.SITE = {
       svc_example: "مثال من أعمالنا",
 
       work_title: "أعمال سابقة",
-      work_lead: "أنظمة بناها مؤسس الشركة لجهات حقيقية، بنتائج قابلة للقياس.",
+      work_lead: "أنظمة بنيناها لجهات حقيقية، بنتائج قابلة للقياس.",
       work_open: "افتح النظام",
       work_try: "جرّبه",
       work_demo: "افتح نسخة العرض",
+      build_title: "قيد التطوير الآن",
+      build_lead: "مشاريع نبنيها أو ندرسها حاليًا على مراحل، بالطريقة نفسها التي نعمل بها مع كل عميل.",
+      build_tag: "قيد التطوير",
+      build_tag_study: "قيد الدراسة",
+      build_now: "الآن",
+      build_next: "التالي",
 
       proc_title: "طريقة العمل",
       proc_lead: "رحلة من ست مراحل في ثلاثة أطوار. بين كل طور وآخر بوابة اعتماد، فلا ننتقل إلى ما بعدها قبل موافقتكم.",
@@ -87,9 +95,10 @@ window.SITE = {
       j_gate: "بوابة اعتماد",
       j_loop: "جولات تعديل",
       j_ongoing: "مستمرة",
+      j_more: "ماذا نفعل ودوركم",
 
       eng_title: "طرق التعاون",
-      eng_lead: "اختاروا ما يناسب حجم الاحتياج. كل تعاون بعقد مكتوب يحدد النطاق والمخرجات.",
+      eng_lead: "اختاروا ما يناسب حجم الاحتياج. كل تعاون باتفاقية مكتوبة تحدد النطاق والمخرجات.",
 
       prod_tag: "منتجنا الأول",
       prod_status: "قبل الإطلاق",
@@ -110,8 +119,12 @@ window.SITE = {
       faq_title: "أسئلة متكررة",
 
       book_title: "احجز اجتماعًا تعريفيًا",
-      book_lead: "30 دقيقة نسمع فيها كيف يعمل فريقكم، ونقول لكم بوضوح إن كانت الأتمتة مناسبة لحالتكم. اختاروا الموعد، وسيصلنا الطلب لنؤكده لكم.",
-      book_direct: "احجز اجتماعًا عن بعد مباشرة من التقويم",
+      book_lead: "30 دقيقة نسمع فيها كيف يعمل فريقكم، ونقول لكم بوضوح إن كانت الأتمتة مناسبة لحالتكم.",
+      cal_p1: "اختر من الأوقات المتاحة مباشرة",
+      cal_p2: "يصلك تأكيد الموعد ورابط Google Meet على بريدك فورًا",
+      cal_p3: "وتذكير قبل الاجتماع",
+      cal_btn: "اختر موعد الاجتماع",
+      cal_note: "تفتح صفحة الحجز في Google Calendar.",
       f_type: "نوع الاجتماع",
       f_type_remote: "عن بعد",
       f_type_remote_sub: "Google Meet",
@@ -156,6 +169,9 @@ window.SITE = {
       copied: "نُسخ",
 
       foot_rights: "جميع الحقوق محفوظة.",
+      foot_desc: "أنظمة إدارة داخلية، ولوحات متابعة لحظية، ووكلاء ذكاء اصطناعي، وربط الأنظمة. نبنيها على طريقة عمل شركتك.",
+      foot_sections: "الأقسام",
+      foot_contact: "تواصل",
       wa_float: "راسلنا على واتساب",
 
       wa_hello: "السلام عليكم، أرغب في الاستفسار عن خدماتكم.",
@@ -209,10 +225,16 @@ window.SITE = {
       svc_example: "Example from our work",
 
       work_title: "Past work",
-      work_lead: "Systems built by our founder for real organizations, with measurable results.",
+      work_lead: "Systems we built for real organizations, with measurable results.",
       work_open: "Open the system",
       work_try: "Try it",
       work_demo: "Open the demo",
+      build_title: "In development now",
+      build_lead: "Projects we are building or studying right now, in stages, the same way we work with every client.",
+      build_tag: "In development",
+      build_tag_study: "In study",
+      build_now: "Now",
+      build_next: "Next",
 
       proc_title: "How we work",
       proc_lead: "A six-stage journey in three phases. A sign-off gate sits between phases, so nothing moves on without your approval.",
@@ -225,9 +247,10 @@ window.SITE = {
       j_gate: "Sign-off gate",
       j_loop: "Revision rounds",
       j_ongoing: "Ongoing",
+      j_more: "What we do and your part",
 
       eng_title: "Ways to work together",
-      eng_lead: "Pick what fits the size of the need. Every engagement has a written contract with a defined scope and deliverables.",
+      eng_lead: "Pick what fits the size of the need. Every engagement has a written agreement with a defined scope and deliverables.",
 
       prod_tag: "Our first product",
       prod_status: "Pre-launch",
@@ -248,8 +271,12 @@ window.SITE = {
       faq_title: "Common questions",
 
       book_title: "Book an intro meeting",
-      book_lead: "30 minutes to hear how your team works, and a clear answer on whether automation fits your case. Pick a time and we will confirm it with you.",
-      book_direct: "Book an online meeting from the calendar",
+      book_lead: "30 minutes to hear how your team works, and a clear answer on whether automation fits your case.",
+      cal_p1: "Pick from the times that are actually free",
+      cal_p2: "Get the confirmation and Google Meet link by email right away",
+      cal_p3: "Plus a reminder before the meeting",
+      cal_btn: "Choose a meeting time",
+      cal_note: "Opens the booking page in Google Calendar.",
       f_type: "Meeting type",
       f_type_remote: "Online",
       f_type_remote_sub: "Google Meet",
@@ -294,6 +321,9 @@ window.SITE = {
       copied: "Copied",
 
       foot_rights: "All rights reserved.",
+      foot_desc: "Internal management systems, live dashboards, AI agents and system integration, built around how your company works.",
+      foot_sections: "Sections",
+      foot_contact: "Contact",
       wa_float: "Message us on WhatsApp",
 
       wa_hello: "Hello, I would like to ask about your services.",
@@ -314,7 +344,7 @@ window.SITE = {
   // نتائج تظهر تحت الواجهة
   proof: [
     { value: { ar: "4 أيام", en: "4 days" }, text: { ar: "مدة التسليم بعد أن كانت أسبوعين، بسير عمل مرحلي", en: "delivery time, down from two weeks, with a stage-gate workflow" } },
-    { value: { ar: "97%", en: "97%" }, text: { ar: "أقل في مشكلات ما بعد التسليم بعد مراجعة جودة نهائية", en: "fewer post-delivery issues after a final QA review" } },
+    { value: { ar: "97%", en: "97%" }, text: { ar: "مشكلات أقل بعد التسليم، بمراجعة جودة نهائية", en: "fewer post-delivery issues after a final QA review" } },
     { value: { ar: "200+", en: "200+" }, text: { ar: "مقطع صوتي في يوم واحد من وكيل ذكاء اصطناعي", en: "audio clips in one day from an AI agent" } }
   ],
 
@@ -374,11 +404,34 @@ window.SITE = {
       alt: { ar: "واجهة قُمَير", en: "Qumair home screen" },
       link: { href: "https://al-shuaibi.github.io/qumair/", label: "work_try" } },
     { id: "content",
-      client: { ar: "Google Sheets", en: "Google Sheets" },
+      client: { ar: "مبني على Google Sheets", en: "Built on Google Sheets" },
       title: { ar: "نظام إدارة إنتاج المحتوى", en: "Content production management system" },
       result: { ar: "توزيع آلي للمهام بحد 3 مشاريع لكل محرر", en: "Automatic workload balancing, 3 projects per editor" },
       text: { ar: "تتبّع دورة إنتاج الفيديو وترجمته عبر 5 حالات، من رفع النص حتى الاعتماد، مع لوحة إنجاز لحظية وإحصائيات أداء لكل محرر.", en: "Tracks video production and translation through 5 statuses, from script upload to approval, with a live progress dashboard and per-editor stats." },
       link: { href: "https://docs.google.com/spreadsheets/d/1KnVoMXSWj8kYffUcthuSxsKolu4Aml0K0Fh233zX89U/edit?usp=sharing", label: "work_demo" } }
+  ],
+
+  // مشاريع قيد التطوير (تظهر تحت «أعمال سابقة»). link اختياري: رابط نسخة عرض عامة إن وُجدت.
+  building: [
+    { id: "ops", status: "dev", img: "assets/work/ops-dashboard.webp",
+      client: { ar: "شركة ديكورات وأبواب", en: "A decor and doors company" },
+      title: { ar: "نظام تشغيل متكامل: من رفع المقاسات حتى التسليم والتحصيل", en: "An end-to-end operations system: from site measurements to handover and collection" },
+      result: { ar: "رحلة المشروع كاملة في نظام واحد، ولوحة إدارة لحظية", en: "The whole project journey in one system, with a live management dashboard" },
+      text: { ar: "كل قسم يعمل في مرحلته، والنظام يفتح الخطوة التالية تلقائيًا: إصدار المقاسات يفتح التسعيرة، وإرسال العرض يفتح التفاوض، والاتفاق يفتح التنفيذ وجدول الدفعات. ويُتابَع التنفيذ عبر 8 مراحل موزونة حتى التسليم والصيانة.", en: "Each department works in its own stage, and the system opens the next step automatically: issued measurements open a quote, a sent quote opens negotiation, and an agreement opens execution and the payment schedule. Execution is tracked through 8 weighted stages up to handover and maintenance." },
+      points: { ar: ["تنبيهات آلية للتأخير والمواعيد الفائتة والدفعات المستحقة", "لوحة إدارة تعرض الإنجاز مقابل الجدول، والمبيعات، والتحصيل", "سجل كامل لكل حركة وتغيير حالة"], en: ["Automatic alerts for delays, missed visits and due payments", "A management dashboard showing progress against schedule, sales and collection", "A full log of every action and status change"] },
+      steps: { ar: ["نظام يعمل على Google Sheets مع فريق الشركة", "منصة ويب خاصة بالشركة"], en: ["A working system on Google Sheets with the company team", "A dedicated web platform for the company"] },
+      alt: { ar: "لوحة الإدارة في نظام التشغيل (بيانات تجريبية)", en: "Management dashboard of the operations system (sample data)" } },
+    { id: "hr", status: "study",
+      client: { ar: "منصة سحابية للمنشآت الصغيرة والمتوسطة", en: "A cloud platform for small and mid-sized businesses" },
+      title: { ar: "منصة موارد بشرية متكاملة مع استشارات HR", en: "An integrated HR platform with HR consulting" },
+      text: { ar: "تجمع إدارة الموظفين والعقود والحضور والإجازات والرواتب في منصة واحدة على الويب والجوال، مع قسم «استشر خبير HR» يجيب عن أسئلة نظام العمل أو يحوّلها لمستشار متخصص.", en: "Employees, contracts, attendance, leave and payroll in one platform on web and mobile, with an \u201cAsk an HR expert\u201d section that answers labor-law questions or routes them to a specialist consultant." },
+      tags: { ar: ["ويب وتطبيق جوال", "قابلة للربط مع مدد وقوى والتأمينات", "مساعد ذكاء اصطناعي"], en: ["Web and mobile app", "Ready to connect with Mudad, Qiwa and GOSI", "AI assistant"] },
+      steps: { ar: ["التصور التقني والمعمارية", "النسخة الأولى"], en: ["Technical concept and architecture", "First version"] } },
+    { id: "elite", status: "study",
+      client: { ar: "منصة تواصل", en: "Networking platform" },
+      title: { ar: "منصة تعارف للنخبة والمتعلمين", en: "A platform connecting accomplished, educated people" },
+      text: { ar: "منصة تعرّف النخبة والمتعلمين ببعضهم، وتربطهم في مجتمع واحد.", en: "A platform that introduces accomplished, educated people to one another and connects them in one community." },
+      steps: { ar: ["دراسة الجدوى", "بناء النسخة الأولى"], en: ["Feasibility study", "Building the first version"] } }
   ],
 
   // طريقة العمل: خارطة رحلة من ست مراحل في ثلاثة أطوار.
@@ -398,8 +451,8 @@ window.SITE = {
       title: { ar: "التشخيص والمخطط", en: "Diagnosis and blueprint" },
       we: { ar: "نرسم سير العمل الحالي والمستهدف، ونحدد البيانات والصلاحيات، وما يُبنى وما لا يحتاج إلى بناء.", en: "We map the current and target workflow, define the data and permissions, and decide what to build and what not to." },
       you: { ar: "جلسات قصيرة مع الفريق، ونماذج من ملفاتكم الحالية.", en: "Short sessions with your team, and samples of your current files." },
-      get: { ar: "مخطط النظام، وخطة مكتوبة بنطاق وسعر ثابت.", en: "A system blueprint and a written plan with a fixed scope and price." },
-      gate: { ar: "اعتماد الخطة وتوقيع العقد", en: "Plan approved and contract signed" } },
+      get: { ar: "مخطط النظام، وخطة مكتوبة بالنطاق والمخرجات.", en: "A system blueprint and a written plan with the scope and deliverables." },
+      gate: { ar: "اعتماد الخطة", en: "Plan approved" } },
     { phase: 1,
       title: { ar: "الأساس والنموذج الأولي", en: "Foundation and prototype" },
       we: { ar: "نبني هيكل البيانات والصلاحيات، ثم أول نسخة تعمل على حالة حقيقية من عملكم.", en: "We build the data structure and permissions, then a first version running on a real case from your work." },
@@ -414,31 +467,31 @@ window.SITE = {
     { phase: 2,
       title: { ar: "البناء والإطلاق", en: "Build and launch" },
       we: { ar: "نكمل باقي الأجزاء على مراحل، وننقل بياناتكم، وندرّب الفريق.", en: "We build the remaining parts in stages, migrate your data and train the team." },
-      you: { ar: "اختبار القبول وفق المعايير المتفق عليها في العقد.", en: "Acceptance testing against the criteria agreed in the contract." },
+      you: { ar: "اختبار القبول وفق المعايير المتفق عليها في الاتفاقية.", en: "Acceptance testing against the criteria agreed in the agreement." },
       get: { ar: "نظام يعمل، وتوثيق، وفريق يعرف استخدامه.", en: "A working system, documentation, and a team that knows how to use it." },
       gate: { ar: "قبول التسليم", en: "Handover accepted" } },
     { phase: 2, ongoing: true,
       title: { ar: "المتابعة والتطوير", en: "Support and growth" },
-      we: { ar: "دعم بعد الإطلاق خلال المدة المحددة في العقد، ثم صيانة وتحسينات.", en: "Post-launch support for the period set in the contract, then maintenance and improvements." },
+      we: { ar: "دعم بعد الإطلاق خلال المدة المحددة في الاتفاقية، ثم صيانة وتحسينات.", en: "Post-launch support for the period set in the agreement, then maintenance and improvements." },
       you: { ar: "تخبروننا بما يستجد في عملكم.", en: "You tell us what changes in your work." },
-      get: { ar: "تقارير أداء، واشتراك شهري اختياري للتطوير.", en: "Performance reports, and an optional monthly plan for further development." } }
+      get: { ar: "تقارير أداء، وتطوير مستمر حسب احتياجكم.", en: "Performance reports, and continued development as you need it." } }
   ],
 
   engagements: [
     { title: { ar: "التشخيص", en: "Diagnosis" },
-      terms: { ar: "سعر ثابت", en: "Fixed price" },
+      terms: { ar: "نقطة البداية", en: "The starting point" },
       text: { ar: "دراسة سير العمل وخطة تنفيذ مكتوبة، تبقى لكم حتى لو نفذتموها مع جهة أخرى.", en: "A study of your workflow and a written implementation plan that stays yours, even if you build it with someone else." } },
     { title: { ar: "مشروع بنطاق محدد", en: "Defined-scope project" },
-      terms: { ar: "سعر ثابت ودفعات مرتبطة بالتسليم", en: "Fixed price, payments tied to delivery" },
-      text: { ar: "عقد يحدد النطاق والمخرجات ومعايير القبول، والدفع على مراحل مع كل تسليم.", en: "A contract that sets scope, deliverables and acceptance criteria, with payment in stages at each delivery." } },
+      terms: { ar: "نطاق ومخرجات محددة", en: "Defined scope and deliverables" },
+      text: { ar: "اتفاقية تحدد النطاق والمخرجات ومعايير القبول، والتسليم على مراحل.", en: "An agreement that sets scope, deliverables and acceptance criteria, with delivery in stages." } },
     { title: { ar: "الدعم والتطوير", en: "Support and development" },
-      terms: { ar: "اشتراك شهري", en: "Monthly subscription" },
+      terms: { ar: "بعد الإطلاق", en: "After launch" },
       text: { ar: "صيانة وتحسينات مستمرة بعد الإطلاق، مع أولوية في الاستجابة.", en: "Ongoing maintenance and improvements after launch, with priority response." } }
   ],
 
   faq: [
     { q: { ar: "لمن تكون ملكية النظام بعد التسليم؟", en: "Who owns the system after handover?" },
-      a: { ar: "لكم بعد السداد الكامل: الكود والبيانات والحسابات. ويُنص على ذلك في العقد.", en: "You do, once paid in full: the code, the data and the accounts. The contract states this." } },
+      a: { ar: "لكم بعد السداد الكامل: الكود والبيانات والحسابات. ويُنص على ذلك في الاتفاقية.", en: "You do, once paid in full: the code, the data and the accounts. The agreement states this." } },
     { q: { ar: "كيف تتعاملون مع بياناتنا؟", en: "How do you handle our data?" },
       a: { ar: "نعمل بأقل صلاحيات لازمة للمهمة، ونوقّع اتفاقية سرية عند الطلب، ونلتزم بنظام حماية البيانات الشخصية.", en: "We work with the minimum access the task needs, sign an NDA on request, and follow the Saudi Personal Data Protection Law." } },
     { q: { ar: "هل نحتاج إلى تغيير أنظمتنا الحالية؟", en: "Do we need to replace our current systems?" },
@@ -446,8 +499,8 @@ window.SITE = {
     { q: { ar: "كم يستغرق المشروع؟", en: "How long does a project take?" },
       a: { ar: "يعتمد على النطاق. نحدد الجدول الكامل في خطة التشخيص، ونبدأ بنموذج أولي تحكمون عليه قبل البناء الكامل.", en: "It depends on scope. We set the full timeline in the diagnosis plan, and start with a prototype you judge before the full build." } },
     { q: { ar: "ماذا يحدث بعد التسليم؟", en: "What happens after handover?" },
-      a: { ar: "تدريب الفريق وتوثيق النظام، وفترة دعم يحددها العقد، ثم اشتراك شهري اختياري للصيانة والتطوير.", en: "Team training and documentation, a support period set in the contract, then an optional monthly subscription for maintenance and development." } },
-    { q: { ar: "هل يكون التعاون بعقد مكتوب؟", en: "Is there a written contract?" },
-      a: { ar: "نعم. كل مشروع بعقد يحدد النطاق والمخرجات ومعايير القبول والدفعات.", en: "Yes. Every project has a contract setting scope, deliverables, acceptance criteria and payments." } }
+      a: { ar: "تدريب الفريق وتوثيق النظام، وفترة دعم تحددها الاتفاقية، ثم صيانة وتطوير حسب احتياجكم.", en: "Team training and documentation, a support period set in the agreement, then maintenance and development as you need them." } },
+    { q: { ar: "هل يكون التعاون باتفاقية مكتوبة؟", en: "Is there a written agreement?" },
+      a: { ar: "نعم. كل مشروع باتفاقية تحدد النطاق والمخرجات ومعايير القبول.", en: "Yes. Every project has an agreement setting scope, deliverables and acceptance criteria." } }
   ]
 };
