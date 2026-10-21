@@ -41,8 +41,10 @@
     $$(".js-linkedin").forEach(function (a) { a.href = c.linkedin; });
     $$(".js-founder-site").forEach(function (a) { a.href = c.founderSite + (LANG === "en" ? "/?lang=en" : ""); });
     $$(".js-city").forEach(function (el) { el.textContent = L(c.city); });
-    if (c.bookingUrl) { $("#book-direct").hidden = false; $("#booking-url").href = c.bookingUrl; }
+    if (c.bookingUrl) $("#booking-url").href = c.bookingUrl;
     $("#year").textContent = new Date().getFullYear();
+    var legal = c.legal ? L(c.legal) : "";
+    $("#foot-legal").hidden = !legal; $("#foot-legal").textContent = legal;
   }
 
   // ---------- Sections ----------
@@ -83,6 +85,36 @@
     }).join("");
   }
 
+  // In development: projects with a screenshot get a featured panel; early-stage ones get compact cards in a row
+  function renderBuilding() {
+    var list = S.building || [];
+    $(".building").hidden = !list.length;
+    function tag(b) { return '<span class="pill' + (b.status === "study" ? " pill-study" : "") + '">' + esc(t(b.status === "study" ? "build_tag_study" : "build_tag")) + "</span>"; }
+    function steps(b) {
+      return '<ol class="build-steps">' + (L(b.steps) || []).map(function (x, i) {
+        return '<li class="' + (i === 0 ? "is-now" : "") + '"><b>' + esc(t(i === 0 ? "build_now" : "build_next")) + "</b><span>" + esc(x) + "</span></li>";
+      }).join("") + "</ol>";
+    }
+    function link(b) { return b.link ? '<a class="case-link" href="' + esc(b.link.href) + '" target="_blank" rel="noopener">' + esc(t(b.link.label)) + "</a>" : ""; }
+    var featured = list.filter(function (b) { return b.img; }).map(function (b) {
+      return '<article class="build" id="build-' + b.id + '">' +
+        '<figure class="build-shot"><img src="' + esc(b.img) + '" alt="' + esc(L(b.alt)) + '" loading="lazy" decoding="async" width="1360" height="805"></figure>' +
+        '<div class="build-copy"><p class="build-meta">' + tag(b) + "<span>" + esc(L(b.client)) + "</span></p>" +
+        "<h4>" + esc(L(b.title)) + '</h4><p class="case-result">' + esc(L(b.result)) + '</p><p class="case-text">' + esc(L(b.text)) + "</p>" +
+        '<ul class="build-points">' + (L(b.points) || []).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
+        steps(b) + link(b) + "</div></article>";
+    }).join("");
+    var compact = list.filter(function (b) { return !b.img; }).map(function (b) {
+      var tags = L(b.tags) || [];
+      return '<article class="build-mini" id="build-' + b.id + '"><p class="build-meta">' + tag(b) + "<span>" + esc(L(b.client)) + "</span></p>" +
+        "<h4>" + esc(L(b.title)) + '</h4><p class="case-text">' + esc(L(b.text)) + "</p>" +
+        (tags.length ? '<ul class="build-tags">' + tags.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") +
+        steps(b) + link(b) + "</article>";
+    }).join("");
+    $("#build-list").innerHTML = featured + (compact ? '<div class="build-row">' + compact + "</div>" : "");
+  }
+
+
   // ---------- Journey map (how we work) ----------
   // Desktop: phases on top, a numbered track with sign-off gates, then one row per lane (what we do / your part / what you receive).
   // Narrow screens: the same stages as a vertical timeline.
@@ -113,11 +145,19 @@
       }
       var gate = s.gate ? '<p class="j-gate"><span class="j-diamond" aria-hidden="true"></span><span><b>' + esc(t("j_gate")) + "</b>" + esc(L(s.gate)) + "</span></p>" :
         '<span class="j-gate j-gate-empty" aria-hidden="true"></span>';
-      return '<li class="j-stage' + (first ? " j-first" : "") + '">' + ptag + track +
+      return '<li class="j-stage' + (first ? " j-first" : "") + '" id="j-stage-' + i + '">' + ptag + track +
         '<h3><span class="sr-only">' + esc(t("j_stage")) + " " + (i + 1) + ": </span>" + esc(L(s.title)) + "</h3>" + tag +
-        cell("j-we", "j_we", s.we) + cell("j-you", "j_you", s.you) + cell("j-get", "j_get", s.get) + gate + "</li>";
+        cell("j-we", "j_we", s.we) + cell("j-you", "j_you", s.you) + cell("j-get", "j_get", s.get) +
+        // Phones only: the stage shows what you receive; what we do and your part open on demand
+        '<button class="j-more" type="button" aria-expanded="false" aria-controls="j-stage-' + i + '"><span>' + esc(t("j_more")) + '</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>' +
+        gate + "</li>";
     }).join("");
     $("#journey").innerHTML = phases + lanes + '<ol class="j-stages">' + items + "</ol>";
+    $("#journey").addEventListener("click", function (e) {
+      var b = e.target.closest(".j-more"); if (!b) return;
+      var li = b.closest(".j-stage"), open = !li.classList.contains("is-open");
+      li.classList.toggle("is-open", open); b.setAttribute("aria-expanded", String(open));
+    });
 
     $("#eng").innerHTML = S.engagements.map(function (e) {
       return '<div class="eng-item"><h4>' + esc(L(e.title)) + '</h4><span class="eng-terms">' + esc(L(e.terms)) + "</span><p>" + esc(L(e.text)) + "</p></div>";
@@ -177,7 +217,7 @@
 
   function drawMap() {
     var fig = $("#map"), svg = $("#map-svg");
-    var narrow = fig.clientWidth < 500;
+    var narrow = fig.clientWidth < 440;
     var mode = (narrow ? "n" : "w") + LANG;
     if (mode === mapMode) return;
     mapMode = mode;
@@ -233,10 +273,11 @@
 
     if (!narrow) {
       // Wide: inputs | hub | outputs, read in the page direction
-      H = 392;
-      hy = 214; hubTop = hy - hubH / 2;
-      capIn.setAttribute("x", rtl ? W - 6 : 6); capIn.setAttribute("y", 14); capIn.setAttribute("text-anchor", "start");
-      capOut.setAttribute("x", rtl ? 6 : W - 6); capOut.setAttribute("y", 14); capOut.setAttribute("text-anchor", "end");
+      // Captions sit just above the first row of chips, so no empty band opens under them
+      H = 372;
+      hy = 196; hubTop = hy - hubH / 2;
+      capIn.setAttribute("x", rtl ? W - 6 : 6); capIn.setAttribute("y", 16); capIn.setAttribute("text-anchor", "start");
+      capOut.setAttribute("x", rtl ? 6 : W - 6); capOut.setAttribute("y", 16); capOut.setAttribute("text-anchor", "end");
       inChips.forEach(function (c, i) { place(c, atStart(c), hy + (i - 1.5) * 92, rtl); });
       outChips.forEach(function (c, i) { place(c, atEnd(c), hy + (i - 1) * 108, rtl); });
       inChips.forEach(function (c, i) {
@@ -450,8 +491,17 @@
     $("#sent-again").addEventListener("click", function () {
       f.reset();
       $("#sent").hidden = true; f.hidden = false;
+      syncType();
       $("#f-name").focus();
     });
+    // Online + calendar link: book on the calendar. Visit (or no calendar link): request form.
+    function syncType() {
+      var cal = $("#type-remote").checked && !!S.contact.bookingUrl;
+      $("#remote-panel").hidden = !cal;
+      $("#visit-fields").hidden = cal;
+    }
+    $$("input[name=type]", f).forEach(function (r) { r.addEventListener("change", syncType); });
+    syncType();
     f.addEventListener("change", function (e) {
       if (e.target.name === "day") $("#err-day").hidden = true;
       if (e.target.name === "time") $("#err-time").hidden = true;
@@ -510,6 +560,7 @@
   renderSituations();
   renderServices();
   renderWork();
+  renderBuilding();
   renderJourney();
   renderFaq();
   renderBooking();
