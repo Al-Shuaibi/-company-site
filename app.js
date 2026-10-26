@@ -37,12 +37,11 @@
     var c = S.contact;
     $$(".js-wa").forEach(function (a) { a.href = waLink(a.getAttribute("data-wa") ? t(a.getAttribute("data-wa")) : t("wa_hello")); });
     $$(".js-phone").forEach(function (a) { a.textContent = c.phoneDisplay; });
-    $$(".js-email").forEach(function (a) { a.href = "mailto:" + c.email; a.textContent = c.email; });
-    $$(".js-linkedin").forEach(function (a) { a.href = c.linkedin; });
-    $$(".js-founder-site").forEach(function (a) { a.href = c.founderSite + (LANG === "en" ? "/?lang=en" : ""); });
     $$(".js-city").forEach(function (el) { el.textContent = L(c.city); });
     if (c.bookingUrl) $("#booking-url").href = c.bookingUrl;
-    $("#year").textContent = new Date().getFullYear();
+    // Copyright years: from the start year in content.js to the current year
+    var now = new Date().getFullYear(), since = +S.since || now;
+    $("#year").textContent = since < now ? since + "\u2013" + now : String(now);
     var legal = c.legal ? L(c.legal) : "";
     $("#foot-legal").hidden = !legal; $("#foot-legal").textContent = legal;
   }
@@ -65,16 +64,69 @@
 
   function renderServices() {
     $("#svc").innerHTML = S.services.map(function (s) {
-      return '<article class="svc" id="svc-' + s.id + '"><div><h3>' + esc(L(s.title)) + '</h3><p class="svc-desc">' + esc(L(s.desc)) + "</p></div>" +
+      return '<article class="svc" id="svc-' + s.id + '"><div class="svc-copy"><h3>' + esc(L(s.title)) + '</h3><p class="svc-desc">' + esc(L(s.desc)) + "</p>" +
         '<div class="svc-side"><h4>' + esc(t("svc_deliver")) + "</h4><ul>" +
         L(s.deliver).map(function (d) { return "<li>" + esc(d) + "</li>"; }).join("") + "</ul>" +
-        '<p class="svc-ex"><span>' + esc(t("svc_example")) + ':</span><a href="#case-' + s.exampleRef + '">' + esc(L(s.example)) + "</a></p></div></article>";
+        '<p class="svc-ex"><span>' + esc(t("svc_example")) + ':</span><a href="#case-' + s.exampleRef + '">' + esc(L(s.example)) + "</a></p></div></div>" +
+        (s.visual ? svcVisual(s.visual, L(s.title)) : "") + "</article>";
     }).join("");
+  }
+
+  // ---------- Service illustrations ----------
+  // Small, theme-aware mock screens that show what each service looks like in use. Labels come from S.visuals.
+  function svcVisual(kind, title) {
+    var V = (S.visuals && S.visuals[LANG]) || {}, v = V[kind] || {}, body = "";
+    function li(arr, fn) { return (arr || []).map(fn).join(""); }
+    if (kind === "system") {
+      body = '<div class="mk-sys"><ul class="mk-side">' + li(v.menu, function (m, i) { return '<li class="' + (i === 2 ? "on" : "") + '">' + esc(m) + "</li>"; }) + "</ul>" +
+        '<div class="mk-main"><p class="mk-h">' + esc(v.head) + '</p><div class="mk-table"><div class="mk-tr mk-th">' + li(v.cols, function (c) { return "<span>" + esc(c) + "</span>"; }) + "</div>" +
+        li(v.rows, function (r) { return '<div class="mk-tr"><span class="mk-num">' + esc(r[0]) + "</span><span>" + esc(r[1]) + '</span><span><i class="mk-st mk-st-' + r[2] + '">' + esc((v.st || {})[r[2]]) + "</i></span></div>"; }) +
+        '</div><p class="mk-role">' + esc(v.role) + "</p></div></div>";
+    } else if (kind === "dash") {
+      var hs = [38, 52, 46, 68, 60, 84];
+      body = '<div class="mk-dash"><div class="mk-kpis">' + li(v.kpis, function (k, i) {
+          return '<div class="mk-kpi' + (i === 2 ? " warn" : "") + '"><span>' + esc(k[0]) + "</span><b>" + esc(k[1]) + "</b>" + (k[2] ? "<em>" + esc(k[2]) + "</em>" : (i === 1 ? '<i class="mk-meter"><i style="width:72%"></i></i>' : "")) + "</div>";
+        }) + '</div><div class="mk-chart"><p class="mk-h">' + esc(v.chart) + '</p><div class="mk-bars">' + li(v.months, function (m, i) {
+          return '<div class="mk-col"><i style="height:' + hs[i] + '%"' + (i === hs.length - 1 ? ' class="last"' : "") + "></i><span>" + esc(m) + "</span></div>";
+        }) + '</div></div><p class="mk-alert">' + esc(v.alert) + "</p></div>";
+    } else if (kind === "agent") {
+      body = '<div class="mk-agent"><div class="mk-file"><b>PDF</b><span><strong dir="auto">' + esc(v.input) + "</strong><small>" + esc(v.inSub) + "</small></span></div>" +
+        '<div class="mk-step"><i></i><span class="mk-bot"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5l1.6 3.9 3.9 1.6-3.9 1.6L8 12.5 6.4 8.6 2.5 7l3.9-1.6z"/></svg>' + esc(v.agent) + "</span><i></i></div>" +
+        '<div class="mk-out"><dl>' + li(v.fields, function (f) { return "<div><dt>" + esc(f[0]) + "</dt><dd>" + esc(f[1]) + "</dd></div>"; }) + "</dl>" +
+        '<div class="mk-review"><span>' + esc(v.review) + '</span><b class="mk-btn">' + esc(v.approve) + '</b><b class="mk-btn mk-btn-line">' + esc(v.edit) + "</b></div></div></div>";
+    } else if (kind === "flow") {
+      var tl = v.tools || [];
+      function tool(x, i) { return '<span class="mk-tool mk-tool-' + i + '">' + esc(x) + "</span>"; }
+      body = '<div class="mk-flow"><div class="mk-net"><div class="mk-tools">' + tool(tl[0] || "", 0) + tool(tl[1] || "", 1) + "</div>" +
+        '<span class="mk-hub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 5.5h8.5l-2-2M13 10.5H4.5l2 2"/></svg>' + esc(v.hub) + "</span>" +
+        '<div class="mk-tools">' + tool(tl[2] || "", 2) + tool(tl[3] || "", 3) + '</div></div><ul class="mk-log">' + li(v.log, function (l) {
+          return '<li><i aria-hidden="true"></i><span><b>' + esc(l[0]) + "</b> " + (LANG === "en" ? "\u2192" : "\u2190") + " " + esc(l[1]) + '</span><time>' + esc(l[2]) + "</time></li>";
+        }) + "</ul></div>";
+    }
+    var bar = '<div class="mk-bar"><i></i><i></i><i></i><span>' + esc(v.title || title) + "</span>" + (v.live ? '<em class="mk-live">' + esc(v.live) + "</em>" : "") + "</div>";
+    return '<figure class="svc-visual" role="img" aria-label="' + esc(title + ": " + t("svc_vis_note")) + '"><div class="mk mk-' + kind + '-wrap" aria-hidden="true">' + bar + body + "</div>" +
+      '<figcaption aria-hidden="true">' + esc(t("svc_vis_note")) + "</figcaption></figure>";
+  }
+
+  var I_PLAY = '<svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>';
+  var I_PAUSE = '<svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>';
+  var TRACKS = {};
+  function playersHTML(w) {
+    return '<div class="players">' + w.audio.map(function (tr, i) {
+      var key = w.id + ":" + i; TRACKS[key] = tr;
+      return '<div class="player" data-track="' + key + '"><button class="p-btn" type="button">' + I_PLAY + I_PAUSE +
+        '</button><div class="p-info"><span class="p-title">' + esc(L(tr.title)) + '</span><span class="p-bar"><b></b></span></div><span class="p-time">0:00</span></div>';
+    }).join("") + "</div>";
   }
 
   function renderWork() {
     $("#work-list").innerHTML = S.work.map(function (w) {
       var link = w.link ? '<a class="case-link" href="' + esc(w.link.href) + '" target="_blank" rel="noopener">' + esc(t(w.link.label)) + "</a>" : "";
+      if (w.audio) {
+        return '<article class="case case-audio" id="case-' + w.id + '"><div class="case-listen"><p class="case-listen-h">' + esc(t("work_listen")) + "</p>" + playersHTML(w) + "</div>" +
+          '<div class="case-copy"><p class="case-client">' + esc(L(w.client)) + "</p><h3>" + esc(L(w.title)) + '</h3><p class="case-result">' + esc(L(w.result)) + "</p>" +
+          '<p class="case-text">' + esc(L(w.text)) + "</p>" + link + "</div></article>";
+      }
       if (!w.img) {
         return '<article class="case case-wide" id="case-' + w.id + '"><div class="case-head"><p class="case-client">' + esc(L(w.client)) + "</p><h3>" + esc(L(w.title)) +
           '</h3><p class="case-result">' + esc(L(w.result)) + '</p></div><div class="case-body"><p class="case-text">' + esc(L(w.text)) + "</p>" + link + "</div></article>";
@@ -89,7 +141,8 @@
   function renderBuilding() {
     var list = S.building || [];
     $(".building").hidden = !list.length;
-    function tag(b) { return '<span class="pill' + (b.status === "study" ? " pill-study" : "") + '">' + esc(t(b.status === "study" ? "build_tag_study" : "build_tag")) + "</span>"; }
+    function isFuture(b) { return b.status === "future" || b.status === "study"; }
+    function tag(b) { return '<span class="pill' + (isFuture(b) ? " pill-study" : "") + '">' + esc(t(isFuture(b) ? "build_tag_study" : "build_tag")) + "</span>"; }
     function steps(b) {
       return '<ol class="build-steps">' + (L(b.steps) || []).map(function (x, i) {
         return '<li class="' + (i === 0 ? "is-now" : "") + '"><b>' + esc(t(i === 0 ? "build_now" : "build_next")) + "</b><span>" + esc(x) + "</span></li>";
@@ -111,7 +164,7 @@
         (tags.length ? '<ul class="build-tags">' + tags.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "") +
         steps(b) + link(b) + "</article>";
     }).join("");
-    $("#build-list").innerHTML = featured + (compact ? '<div class="build-row">' + compact + "</div>" : "");
+    $("#build-list").innerHTML = featured + (compact ? '<div class="build-future"><p class="build-future-h"><b>' + esc(t("build_future")) + "</b><span>" + esc(t("build_future_lead")) + '</span></p><div class="build-row">' + compact + "</div></div>" : "");
   }
 
 
@@ -512,16 +565,6 @@
     $("#f-email").addEventListener("input", function () {
       if (EMAIL_RE.test(this.value.trim())) { $("#err-email").hidden = true; this.classList.remove("invalid"); }
     });
-    $("#copy-email").addEventListener("click", function () {
-      var btn = this, done = function () { btn.textContent = t("copied"); setTimeout(function () { btn.textContent = t("copy"); }, 1600); };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(S.contact.email).then(done, function () { selectText($(".js-email")); });
-      } else selectText($(".js-email"));
-    });
-  }
-  function selectText(node) {
-    var r = document.createRange(); r.selectNodeContents(node);
-    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
   }
 
   // ---------- Chrome ----------
@@ -554,12 +597,49 @@
     window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(drawMap, 150); });
   }
 
+  // ---------- Audio samples ----------
+  var audio = new Audio(); audio.preload = "none";
+  var curKey = null, durations = {};
+  function fmtDur(x) { if (!isFinite(x) || x < 0) return "0:00"; var m = Math.floor(x / 60), r = Math.floor(x % 60); return m + ":" + (r < 10 ? "0" : "") + r; }
+  function loadDuration(key) {
+    if (durations[key] !== undefined) return;
+    durations[key] = NaN;
+    var a = new Audio(); a.preload = "metadata";
+    a.addEventListener("loadedmetadata", function () { durations[key] = a.duration; syncPlayers(); });
+    a.src = TRACKS[key].src;
+  }
+  function syncPlayer(pl) {
+    var key = pl.getAttribute("data-track"), active = key === curKey, playing = active && !audio.paused;
+    pl.classList.toggle("playing", playing);
+    pl.querySelector(".p-btn").setAttribute("aria-label", t(playing ? "pause" : "play") + ": " + L(TRACKS[key].title));
+    var dur = active && isFinite(audio.duration) ? audio.duration : durations[key];
+    var pct = active && isFinite(audio.duration) && audio.duration > 0 ? audio.currentTime / audio.duration * 100 : 0;
+    pl.querySelector(".p-bar b").style.width = pct + "%";
+    pl.querySelector(".p-time").textContent = active && audio.currentTime > 0 ? fmtDur(audio.currentTime) + " / " + fmtDur(dur) : fmtDur(dur);
+  }
+  function syncPlayers() { $$(".player").forEach(syncPlayer); }
+  function toggleTrack(key) {
+    if (curKey === key && !audio.paused) { audio.pause(); return; }
+    if (curKey !== key) { audio.src = TRACKS[key].src; curKey = key; }
+    var pr = audio.play(); if (pr && pr.catch) pr.catch(function () {});
+  }
+  ["play", "pause", "ended", "timeupdate", "loadedmetadata"].forEach(function (ev) { audio.addEventListener(ev, syncPlayers); });
+  function bindPlayers() {
+    $$(".player").forEach(function (pl) {
+      var key = pl.getAttribute("data-track");
+      loadDuration(key);
+      pl.querySelector(".p-btn").addEventListener("click", function () { toggleTrack(key); });
+      syncPlayer(pl);
+    });
+  }
+
   // ---------- Boot ----------
   applyText();
   renderProof();
   renderSituations();
   renderServices();
   renderWork();
+  bindPlayers();
   renderBuilding();
   renderJourney();
   renderFaq();
